@@ -20,17 +20,16 @@
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   -->
 
-
 </head>
 
-<body>
+<body onload="setAPIKey();">
 
 <h1 id="heading">
 IBM Watson Visual Recognition - Custom Default Classifier App
 </h1>
-<p>Watson Visual Recognition API KEY: <input id="watsonApiKey" value="" onchange="document.getElementById('watsonApiKeyForm').value=document.getElementById('watsonApiKey').value;" type="password" />
+<p>Watson Visual Recognition API KEY: <input id="watsonApiKey" value="" onchange="document.getElementById('watsonApiKeyForm').value=document.getElementById('watsonApiKey').value;setCookie('watsonApiKey',document.getElementById('watsonApiKey').value,365);" type="password" />
 <br/>
-You need API key. <a href="https://www.ibm.com/watson/services/visual-recognition/" target="_blank">Get it from here and follow "Get Started Free."</a>
+<a href="https://www.ibm.com/watson/services/visual-recognition/" target="_blank">Get API key from here and follow "Get Started Free."</a>
 </p>
 <div id="content">
         
@@ -47,9 +46,13 @@ You need API key. <a href="https://www.ibm.com/watson/services/visual-recognitio
             </form>
 
         </div>
+        <div><p>Powered by <a href="https://www.ibm.com/watson/services/visual-recognition/" target="_blank">IBM Watson Visual Recognition</a>, <a href="http://bluemix.net/" target="_blank">IBM Cloud (Bluemix)</a> and <a href="https://www.ibm.com/devops/method/category/tools/" target="_blank">DevOps Toolchains</a>.<br/>
+            Sources are here: <a href="https://github.com/samisalkosuo/visualrec-default-app" target="_blank">https://github.com/samisalkosuo/visualrec-default-app</a>
+        </p><p>
+            <a href="https://console.bluemix.net/docs/services/visual-recognition/tutorial-custom-classifier.html#creating-a-custom-classifier" target="_blank">You can also create custom classifiers for your own use case.</a> Example use cases include detecting rust in bridges, finding out free parking spaces or detecting humans in restricted areas. 
+        </p>
+        </div>
         <div id="feedback">
-            Powered by <a href="https://www.ibm.com/watson/services/visual-recognition/" target="_blank">IBM Watson Visual Recognition</a>, <a href="http://bluemix.net/" target="_blank">IBM Cloud (Bluemix)</a> and <a href="https://www.ibm.com/devops/method/category/tools/" target="_blank">DevOps Toolchains</a>.<br/>            
-            Sources are here: <a href="https://github.com/samisalkosuo/amihuman-webapp" target="_blank">https://github.com/samisalkosuo/amihuman-webapp</a>
         </div>
 
     </div>
@@ -58,8 +61,6 @@ You need API key. <a href="https://www.ibm.com/watson/services/visual-recognitio
         <div id="render" class="container-fluid"></div>
     </div>
 
-
 </body>
-
 
 </html>
