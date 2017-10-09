@@ -96,7 +96,7 @@ function setAPIKey()
     var apiKey=getCookie("watsonApiKey");
     if (apiKey!=="")
     {
-        console.log("apiKey: "+apiKey);
+        //console.log("apiKey: "+apiKey);
         document.getElementById('watsonApiKeyForm').value=apiKey;
         document.getElementById('watsonApiKey').value=apiKey;
     }
