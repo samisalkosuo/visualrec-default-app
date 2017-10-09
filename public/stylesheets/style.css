@@ -84,12 +84,15 @@
 }
 
 table {}
-
+font-size: 12px;
 */
 
+.imageDiv {
+    position:relative;
+}
 
 table, tr, td {
     border: 1px dashed rgba(0, 0, 0, 0.25);
     text-align: left;
-    font-size: 25px;
+    
 }

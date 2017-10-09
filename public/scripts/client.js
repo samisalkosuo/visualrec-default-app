@@ -1,6 +1,8 @@
 var id = new Date().getTime();
 var scaleSlider = undefined;
 
+var colors=["#0000ff","#00ff00","#ff0000","#bc8f8f","#0e2f44","#8a2be2","#b6313e"];
+
 Dropzone.options.uploader = {
     acceptedFiles: "image/jpeg,image/jpg",
     uploadMultiple: false,
@@ -39,10 +41,15 @@ io.on('update', function(data) {
 
 io.on("processingComplete", function(data) {
     console.log("processing complete");
-    //renderResult(data);
-    debug()
+    renderResult(data);
+    //debug()
 });
 
+function debug() {
+    renderResult('{"imagePath":"./uploads/12377b3c-7561-47ce-8a43-814aec8dabbf/image.jpg","jsonPath":"./uploads/12377b3c-7561-47ce-8a43-814aec8dabbf/image.json"}')
+}
+
+/*
 $(document).ready(function() {
     $("#sessionId").val(id);
 
@@ -59,13 +66,8 @@ $(document).ready(function() {
     });
 
 })
+*/
 
-
-
-
-function debug() {
-    renderResult('{"imagePath":"./uploads/06bd337d-2f60-4714-8bf8-08316615ea88/image.jpg","jsonPath":"./uploads/06bd337d-2f60-4714-8bf8-08316615ea88/image.json"}')
-}
 
 function resetView() {
     $("#render").empty();
@@ -119,15 +121,22 @@ function constructDiv(data,imagePath) {
     console.log(JSON.stringify(data, null, 2));
 //    <div style="position: relative; background: url(path to image); width: (width)px; height: (height)px;">
     var div = $("<div>");
+
+    //check error
+    var error = data.tiles[0][0].analysis.error;
+    if (error !== undefined)
+    {
+        var feedback = $("#feedback");
+        var innerHTML = feedback.html();
+        innerHTML += "<br/>" + '<span style="color:#ff0000;">ERROR<br/>'+error.error+'<br/>Code: '+error.code+"</span>";
+        feedback.html(innerHTML);
+    
+        feedback.scrollTop(feedback.prop("scrollHeight"));
+        return div;
+    }
+    
     //div.css("position", "relative");
 //    div.css("background", imagePath);
-    var table = $("<table>");
-    var row = $("<tr>");
-    var cell = $("<td>");
-    //cell.append($("<img class='' src='" + imagePath + "' width='50%' />"));
-    cell.append($("<img class='' src='" + imagePath + "' />"));
-    row.append(cell);
-    table.append(row);  
     //table.append($("<tr>"));
     //table.append($("<td>"));
     //table.append($("<img class='' src='" + imagePath + "' width='50%' />"));
@@ -138,29 +147,78 @@ function constructDiv(data,imagePath) {
     
     
     console.log(JSON.stringify(data.tiles[0][0].analysis.images, null, 2));
+    //assume one image
     image = data.tiles[0][0].analysis.images[0]
     console.log(JSON.stringify(image, null, 2));
         
     console.log(JSON.stringify(image.faces, null, 2));
     var facesLength=image.faces.length;
+    
+    //result table
+    var table = $("<table>");
+    var row = $("<tr>");
+    var cell = $("<td>");
+    var imageDiv = $('<div class="imageDiv">');
+    //cell.append($("<img class='' src='" + imagePath + "' width='50%' />"));
+    imageDiv.append($("<img class='' src='" + imagePath + "' />"));
+    for (var i=0 ;i<facesLength ; i++)
+    {
+        var facedata=image.faces[i];
+        var faceTop=facedata.face_location.top;
+        var faceLeft=facedata.face_location.left;
+        var faceWidth=facedata.face_location.width;
+        var faceHeight=facedata.face_location.height;
+        var faceBox=$("<div>");
+        var color="#000000"
+        if (i<7)
+        {
+            color=colors[i];
+        }
+        faceBox.css("position", "absolute");
+        faceBox.css("top", faceTop+"px");
+        faceBox.css("left", faceLeft+"px");
+        faceBox.css("width", faceWidth+"px");
+        faceBox.css("height", faceHeight+"px");
+        faceBox.css("border", "2px solid "+color);
+        faceBox.css("background-color", "transparent");
+        imageDiv.append(faceBox);
+    }
+    cell.append(imageDiv);
+    row.append(cell);
+    table.append(row);  
     //table.append($("<tr>"));
     //table.append($("<td>"));
-    
-    for (var i=0 ;i<facesLength ; i++)
+    if (facesLength==0)
     {
         row = $("<tr>");
         cell = $("<td>");
-        facedata=image.faces[i];
-        console.log(JSON.stringify(facedata, null, 2));
-        var ageMin=facedata.age.min
-        var ageMax=facedata.age.max
-        var ageScore=facedata.age.score
-        var gender=facedata.gender.gender
-        var genderScore=facedata.gender.score
-        cell.append($("<p>"+gender+" ("+genderScore+")<br/>Age: "+ageMin+" - "+ageMax+" ("+ageScore+")<br/></p>"));
-        //cell.html=gender+" ("+genderScore+")<br/>Age: "+ageMin+" - "+ageMax+" ("+ageScore+")";
+        cell.append($("<span>No faces detected.</span>"));
         row.append(cell);
         table.append(row);  
+    }
+    else
+    {
+        for (var i=0 ;i<facesLength ; i++)
+        {
+            row = $("<tr>");
+            cell = $("<td>");
+            var facedata=image.faces[i];
+            console.log(JSON.stringify(facedata, null, 2));
+            var ageMin=facedata.age.min
+            var ageMax=facedata.age.max
+            var ageScore=facedata.age.score
+            var gender=facedata.gender.gender
+            var genderScore=facedata.gender.score
+            var color="#000000"
+            if (i<7)
+            {
+                color=colors[i];
+            }
+            cell.append($('<span style="color:'+color+';">'+gender+" ("+genderScore+")<br/>Age: "+ageMin+" - "+ageMax+" ("+ageScore+")<br/></span>"));
+            //cell.html=gender+" ("+genderScore+")<br/>Age: "+ageMin+" - "+ageMax+" ("+ageScore+")";
+            row.append(cell);
+            table.append(row);  
+        }
     }
     //table.append($("</td>"));
     //table.append($("</tr>"));
@@ -170,7 +228,35 @@ function constructDiv(data,imagePath) {
         //div.append(face.age.max);
     console.log("");
     //div.append(faceDetectionData);
+
+    //classification data
+    console.log(JSON.stringify(data.tiles[0][0].analysis_classify.images, null, 2));
+    //assume one image
+    image = data.tiles[0][0].analysis_classify.images[0];
+    var classifiers=image.classifiers;
+    var classifiersLength=image.classifiers.length;
+    //table.append($("<tr>"));
+    //table.append($("<td>"));
     
+    for (var i=0 ;i<classifiersLength ; i++)
+    {
+        var classes=classifiers[i].classes;
+        var classesLength=classes.length;
+        for (var j=0;j<classesLength;j++)
+        {
+            row = $("<tr>");
+            cell = $("<td>");
+            console.log("class: "+classes[j].class+" "+classes[j].score);
+            var type_hierarchy= classes[j].type_hierarchy ? classes[j].type_hierarchy: "";            
+            cell.append($("<span>"+classes[j].class+" ("+classes[j].score+")<br/>"+type_hierarchy+"</span>"));
+            row.append(cell);
+            table.append(row);  
+                    
+        }
+//        console.log("classes");
+  //      console.log(classes);
+    }
+
     /*//    div.css("width", data.imageWidth);
 //    div.css("height", data.imageHeight);
 

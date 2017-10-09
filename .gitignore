@@ -5,6 +5,7 @@ env.properties
 *.jpg
 *.png
 
+API_KEY.txt
 
 # dependencies
 /node_modules

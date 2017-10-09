@@ -27,11 +27,9 @@ var completeAnalysisRequests = 0;
 var rootDir = './uploads';
 var MIN_TILE_SIZE = 200;
 
-// PUT YOUR WATSON KEY AND CLASSIFIER ID HERE:
-var WATSON_KEY = "aed5041ff7d0e1f2277c2a5d368095d993818797";
-//var WATSON_CLASSIFIER = "t_visitorparking_521529814";
+var WATSON_KEY = "THIS IS RECEIVED FROM CLIENT WHEN IMAGE UPLOADED";
 
-
+//when upload is received this is updated
 var visual_recognition = new VisualRecognitionV3({
     api_key: WATSON_KEY,
     version_date: '2016-05-19'
@@ -98,7 +96,16 @@ app.post('/file-upload', function(req, res) {
 
     var tileWidth = req.body.tileWidth ? req.body.tileWidth : MIN_TILE_SIZE;
     var tileHeight = req.body.tileHeight ? req.body.tileHeight : MIN_TILE_SIZE;
-
+    WATSON_KEY = req.body.watsonApiKey;
+    if (WATSON_KEY === undefined || WATSON_KEY === "")
+    {
+        WATSON_KEY="N/A";
+    }
+    visual_recognition = new VisualRecognitionV3({
+        api_key: WATSON_KEY,
+        version_date: '2016-05-19'
+    });
+            
     if (tileWidth < MIN_TILE_SIZE) {
         tileWidth = MIN_TILE_SIZE
     }
@@ -113,7 +120,8 @@ app.post('/file-upload', function(req, res) {
             res.status(500).send(err);
         } else {
             res.send('File uploaded!');
-            update(sessionId, "file uploaded and saved to " + imagePath)
+            //update(sessionId, "file uploaded and saved to " + imagePath)
+            update(sessionId, "file uploaded")
             generateImageTiles(sessionId, {
                 rootDir: rootDir,
                 id: id,
@@ -125,7 +133,7 @@ app.post('/file-upload', function(req, res) {
                 if (err) {
                     update(sessionId, "parsing error: " + err.toString())
                 } else {
-                    update(sessionId, "parsing complete")
+                    //update(sessionId, "parsing complete")
                     var imageData = imageData;
                     imageData.imagePath = imagePath;
                     processImages(sessionId, imageData, function(updatedImageData) {
@@ -136,7 +144,7 @@ app.post('/file-upload', function(req, res) {
 
                         fs.writeFile(jsonPath, json, function(err) {
                             if (err) return update(sessionId, err);
-                            update(sessionId, 'wrote json data');
+                            //update(sessionId, 'wrote json data');
 
                             var result = {
                                 imagePath: imagePath,
@@ -367,12 +375,13 @@ function generateImageTiles(sessionId, options, callback) {
 function processImages(sessionId, imageData, callback) {
     update(sessionId, "performing analysis on images...")
 
-    if (1===1)
+    //this is for debug
+/*    if (1===1)
     {
         callback(imageData);
         return;
     }
-
+*/
     totalAnalysisRequests = 0;
     completeAnalysisRequests = 0;
     var requests = [];
@@ -411,29 +420,23 @@ function analyzeImage(sessionId, _image) {
     totalAnalysisRequests++;
     return function(analyze_callback) {
 
-
         var fileName = _image.path;
         var analysis = {}
 
-
-
-
         var params = {
             images_file: fs.createReadStream(fileName)
-            //classifier_ids: [WATSON_CLASSIFIER],
-            //threshold: 0.0
         };
 
         update(sessionId, "detecting faces...");
         visual_recognition.detectFaces(params, function(err, res) {
             completeAnalysisRequests++;
             if (err) {
-                update(sessionId, "Image Classifier: " + fileName + ": " + JSON.stringify(err));
+                update(sessionId, "Face Detection:" + JSON.stringify(err));
                 analysis = {
                     error: err
                 }
             } else {
-                update(sessionId, "Classified: " + completeAnalysisRequests + " of " + totalAnalysisRequests)
+                //update(sessionId, "Classified: " + completeAnalysisRequests + " of " + totalAnalysisRequests)
                 analysis = res;
             }
             console.log("face detection: "+JSON.stringify(analysis, null, 2));
@@ -450,12 +453,12 @@ function analyzeImage(sessionId, _image) {
 
                 completeAnalysisRequests++;
                 if (err) {
-                    update(sessionId, "Image Classifier: " + fileName + ": " + JSON.stringify(err));
+                    update(sessionId, "Image Classifier: " + JSON.stringify(err));
                     analysis = {
                         error: err
                     }
                 } else {
-                    update(sessionId, "Classified: " + completeAnalysisRequests + " of " + totalAnalysisRequests)
+                    //update(sessionId, "Classified: " + completeAnalysisRequests + " of " + totalAnalysisRequests)
                     analysis = res;
                 }
                 console.log("classification: "+JSON.stringify(analysis, null, 2));
@@ -483,10 +486,10 @@ io.on('connection', function(socket) {
 
 
 
-    socket.on('upgrade', function(room) {
-        console.log('upgrade event received for room/id: ' + room);
-        socket.join(room);
-        socketMap[room] = socket;
+    socket.on('upgrade', function(id) {
+        console.log('upgrade event received for id: ' + id);
+        socket.join(id);
+        socketMap[id] = socket;
     });
 
 });
