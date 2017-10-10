@@ -41,6 +41,17 @@ io.on('update', function(data) {
     feedback.scrollTop(feedback.prop("scrollHeight"));
 });
 
+io.on('clearFeedback', function(data) {
+    var feedback = $("#feedback");
+    var innerHTML = feedback.html();
+    innerHTML = "";
+    updateRow=1;
+    feedback.html(innerHTML);
+
+    feedback.scrollTop(feedback.prop("scrollHeight"));
+});
+
+
 io.on("processingComplete", function(data) {
     console.log("processing complete");
     renderResult(data);

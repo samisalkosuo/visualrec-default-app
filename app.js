@@ -82,6 +82,9 @@ app.post('/file-upload', function(req, res) {
         return;
     }
 
+    clearFeedback(sessionId, "clear feedback");
+    
+
     var uploadDir = rootDir + "/" + id;
     var imagePath = uploadDir + "/image.jpg";
     var jsonPath = uploadDir + "/image.json";
@@ -307,6 +310,13 @@ function update(id, data) {
     //console.log(data)
     if (id && socketMap[id]) {
         socketMap[id].emit("update", data)
+    }
+}
+
+function clearFeedback(id, data) {
+    //console.log(data)
+    if (id && socketMap[id]) {
+        socketMap[id].emit("clearFeedback", data)
     }
 }
 
