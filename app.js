@@ -123,6 +123,7 @@ app.post('/file-upload', function(req, res) {
         } else {
             res.send('File uploaded!');
             jimp.read(imagePath).then(function (image) {
+                image.exifRotate(function(err, image) {
                 //resize image
                 image.resize(640, jimp.AUTO).write(imagePath,function(err,image){    
                         //update(sessionId, "file uploaded and saved to " + imagePath)
@@ -162,8 +163,9 @@ app.post('/file-upload', function(req, res) {
                             }
 
                         })
-                });
-            }).catch(function (err) {
+                });//end resize
+            });//end exifRotate
+        }).catch(function (err) {
 
                 // handle an exception 
                 console.log(err);
