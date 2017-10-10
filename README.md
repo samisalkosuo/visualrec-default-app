@@ -7,10 +7,25 @@ and modified.
 
 This app may or may not be available at: http://virecapp.mybluemix.net/
 
-# Setup
+# Usage
 
 - Get Visual Recognition API key from https://www.ibm.com/watson/services/visual-recognition/.
-- Change name and host in manifest.yml.
-- Use cf push to push application to Bluemix.
-- Or, set up a Toolchain in Bluemix to automatically deploy app on commits.
+  - Free usage is 250 requests per day.
+- If http://virecapp.mybluemix.net/ exists, go there.
+  - Enter API key (key is stored as cookie).
+- Upload or take images to detect faces and classify contents.
+  - Note that upload takes two requests, first is to detect faces and second is to classify image.
+
+# Local setup
+
+- git clone https://github.com/samisalkosuo/visualrec-default-app.git
+- Run app: 
+  - npm install && npm start
+- Go to http://locahost:6004.
+- Use the app.
+- To run on Bluemix:
+  - Change name and host in manifest.yml.
+  - Use cf push to push application to Bluemix.
+  - Or, set up a Toolchain in Bluemix to automatically deploy app on commits.
+
 
