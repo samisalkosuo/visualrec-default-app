@@ -61,7 +61,6 @@ Delete upload directory
 */
 app.get('/delete-uploads', function(req, res) {
     
-
     fs.remove(rootDir, err => {
         if (err) return console.error(err);
         console.log("Removed dir: "+rootDir);
@@ -85,7 +84,6 @@ app.post('/file-upload', function(req, res) {
 
     var uploadDir = rootDir + "/" + id;
     var imagePath = uploadDir + "/image.jpg";
-    var imageResizedPath = uploadDir + "/image_resized.jpg";
     var jsonPath = uploadDir + "/image.json";
 
     if (!fs.existsSync(rootDir)) {
@@ -166,7 +164,6 @@ app.post('/file-upload', function(req, res) {
                 });//end resize
             });//end exifRotate
         }).catch(function (err) {
-
                 // handle an exception 
                 console.log(err);
             });
@@ -203,7 +200,7 @@ function processImages(sessionId, imageData, callback) {
     totalAnalysisRequests = 0;
     completeAnalysisRequests = 0;
     var requests = [];
-    //TODO: refactor
+    //TODO: refactor this
     //loop over cols
     for (var r = 0; r < imageData.tiles.length; r++) {
 

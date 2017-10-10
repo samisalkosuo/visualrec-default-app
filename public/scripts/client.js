@@ -1,5 +1,4 @@
-var id = new Date().getTime();
-var scaleSlider = undefined;
+var id =new Date().getTime();
 
 var colors=["#0000ff","#00ff00","#ff0000","#bc8f8f","#0e2f44","#8a2be2","#b6313e"];
 
@@ -73,6 +72,7 @@ function getCookie(cname) {
     return "";
 }
 
+//set API key to form and set client ID
 function setAPIKey()
 {
     var apiKey=getCookie("watsonApiKey");
@@ -82,6 +82,7 @@ function setAPIKey()
         document.getElementById('watsonApiKeyForm').value=apiKey;
         document.getElementById('watsonApiKey').value=apiKey;
     }
+
 }
 
 function resetView() {
