@@ -2,6 +2,8 @@ var id =new Date().getTime();
 
 var colors=["#0000ff","#00ff00","#ff0000","#bc8f8f","#0e2f44","#8a2be2","#b6313e"];
 
+var updateRow=1;
+
 Dropzone.options.uploader = {
     acceptedFiles: "image/jpeg,image/jpg",
     uploadMultiple: false,
@@ -32,7 +34,8 @@ io.on('disconnect', function() {
 io.on('update', function(data) {
     var feedback = $("#feedback");
     var innerHTML = feedback.html();
-    innerHTML += "<br/>" + data.toString();
+    innerHTML += "<br/>" + updateRow+": "+data.toString();
+    updateRow++;
     feedback.html(innerHTML);
 
     feedback.scrollTop(feedback.prop("scrollHeight"));
