@@ -104,7 +104,7 @@ function renderResult(dataStr) {
             //console.log(result)
             var table = constructDiv(result,data.imagePath);
             console.log("table: "+table);
-            renderContainer.append(table);
+            renderContainer.prepend(table);
 
             $("#classification").removeClass("hidden");
             //$("#overlayToggle").bootstrapToggle('on');
