@@ -5,6 +5,8 @@ Sample app using IBM Watson Visual Recognition default classifiers.
 This code is based on: https://github.com/IBM-Bluemix/Visual-Recognition-Tile-Localization
 and modified.
 
+This app may or may not be available at: http://virecapp.mybluemix.net/
+
 # Setup
 
 - Get Visual Recognition API key from https://www.ibm.com/watson/services/visual-recognition/.
