@@ -24,19 +24,18 @@ IBM Watson Visual Recognition - Default Classifier App
 <br/>
 <a href="https://www.ibm.com/watson/services/visual-recognition/" target="_blank">To get API key, follow this link and find "Get Started Free."</a>
 </p>
-<div><small>Powered by <a href="https://www.ibm.com/watson/services/visual-recognition/" target="_blank">IBM Watson Visual Recognition</a>, <a href="http://bluemix.net/" target="_blank">IBM Cloud (Bluemix)</a> and <a href="https://www.ibm.com/devops/method/category/tools/" target="_blank">DevOps Toolchains</a>.<br/>
-    Sources are here: <a href="https://github.com/samisalkosuo/visualrec-default-app" target="_blank">https://github.com/samisalkosuo/visualrec-default-app</a>
-    <br/>
-    <a href="https://console.bluemix.net/docs/services/visual-recognition/tutorial-custom-classifier.html#creating-a-custom-classifier" target="_blank">You can also create custom classifiers for your own use case.</a> Example use cases include <a href="https://github.com/IBM-Bluemix/Visual-Recognition-Tile-Localization" target="_blank">detecting rust in bridges</a>, finding out free parking spaces or detecting humans in restricted areas.
-</small>
+<div><small>
+Powered by <a href="https://www.ibm.com/watson/services/visual-recognition/" target="_blank">IBM Watson Visual Recognition</a>, <a href="http://bluemix.net/" target="_blank">IBM Cloud</a> and <a href="https://www.ibm.com/devops/method/category/tools/" target="_blank">DevOps Toolchains</a>.
+<br/><br/>
+Sources are here: <a href="https://github.com/samisalkosuo/visualrec-default-app" target="_blank">https://github.com/samisalkosuo/visualrec-default-app</a>
+<br/><br/>
+<a href="https://console.bluemix.net/docs/services/visual-recognition/tutorial-custom-classifier.html#creating-a-custom-classifier" target="_blank">You can also create custom classifiers for your own use case.</a> Example use cases include <a href="https://github.com/IBM-Bluemix/Visual-Recognition-Tile-Localization" target="_blank">detecting rust in bridges</a>, finding out free parking spaces or detecting humans in restricted areas.
+</small></div>
 
-</div>
-
-<div id="content">
-        
-        <div class="dropContainer">
-            <form action="/file-upload" class="dropzone" id="uploader" enctype="multipart/form-data">
-                <div class="dz-message" data-dz-message><span>Click here to upload or take an image and let IBM Watson tell you the contents.</span></div>
+<div id="content">        
+    <div class="dropContainer">
+        <form action="/file-upload" class="dropzone" id="uploader" enctype="multipart/form-data">
+            <div class="dz-message" data-dz-message><span>Click here to upload or take an image and let IBM Watson tell you the contents.</span></div>
                 <input name="tileWidth" value="200" type="hidden" step="1" />
                 <input name="tileHeight" value="200" type="hidden" step="1" />
                 <input id="watsonApiKeyForm" name="watsonApiKey" value="" type="hidden" step="1" />
@@ -44,17 +43,14 @@ IBM Watson Visual Recognition - Default Classifier App
                     <input name="file" type="file" />
                     <input type="submit" value="Upload" />
                 </div>
-            </form>
-
-        </div>
-        <div id="feedback">
-        </div>
-
+        </form>
     </div>
+    <div id="feedback"></div>
+</div>
 
-    <div id="render-parent" class="hidden">
-        <div id="render" class="container-fluid"></div>
-    </div>
+<div id="render-parent" class="hidden">
+    <div id="render" class="container-fluid"></div>
+</div>
 
 </body>
 
